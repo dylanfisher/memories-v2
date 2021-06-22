@@ -1,0 +1,29 @@
+// Foundation
+
+html {
+  @include default-font;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+div {
+  vertical-align: top;
+}
+
+.forest-image-jump-fix {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}

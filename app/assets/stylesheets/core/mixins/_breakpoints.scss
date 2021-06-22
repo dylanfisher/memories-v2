@@ -1,0 +1,51 @@
+// Breakpoints
+
+// Usage:
+// @include breakpoint(md) {
+//   display: none;
+// }
+
+@mixin breakpoint($class) {
+  // Horizontal breakpoints
+  @if $class == xs {
+    @media (max-width: $screen-sm - 1) { @content; }
+  }
+
+  @else if $class == sm {
+    @media (min-width: $screen-sm) { @content; }
+  }
+
+  @else if $class == md {
+    @media (min-width: $screen-md) { @content; }
+  }
+
+  @else if $class == lg {
+    @media (min-width: $screen-lg) { @content; }
+  }
+
+  @else if $class == xl {
+    @media (min-width: $screen-xl) { @content; }
+  }
+
+  // Vertical breakpoints
+  @else if $class == sm-vert {
+    @media (min-height: $vert-screen-sm) { @content; }
+  }
+
+  // Orientation breakpoints
+  @else if $class == landscape {
+    @media (orientation: landscape) {
+      @content;
+    }
+  }
+
+  @else if $class == portrait {
+    @media (orientation: portrait) {
+      @content;
+    }
+  }
+
+  @else {
+    @warn "Breakpoint mixin does not support this size";
+  }
+}
