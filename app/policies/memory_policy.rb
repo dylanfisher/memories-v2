@@ -1,0 +1,2 @@
+class MemoryPolicy < BlockRecordPolicy
+end

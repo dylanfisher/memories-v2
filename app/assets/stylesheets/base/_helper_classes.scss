@@ -33,3 +33,7 @@
   clip: rect(0,0,0,0);
   border: 0;
 }
+
+.mb-gutter { margin-bottom: $gutter; }
+
+.muted { opacity: 0.6; }

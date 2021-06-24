@@ -1,15 +1,16 @@
 // Font stacks
-$default: sans-serif;
+$font-mono-regular: 'FoundersGroteskMono', monospace;
+$suisse-regular: 'SuisseIntl-Regular', sans-serif;
+$suisse-medium: 'SuisseIntl-Medium', sans-serif;
 
-// Body text
 @mixin body-text {
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0;
   line-height: 1.4;
-  font-family: $default;
+  font-family: $suisse-regular;
 
   @include breakpoint(md) {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 .body-text { @include body-text; }
@@ -17,3 +18,44 @@ $default: sans-serif;
 @mixin default-font {
   @include body-text;
 }
+
+@mixin large-title {
+  font-size: 34px;
+  letter-spacing: 0;
+  line-height: 1;
+  font-family: $suisse-medium;
+
+  @include breakpoint(md) {
+    font-size: 54px;
+  }
+}
+.large-title { @include large-title; }
+
+@mixin jumbo-title {
+  font-size: 36px;
+  letter-spacing: 0;
+  line-height: 1;
+  font-family: $suisse-medium;
+
+  @include breakpoint(md) {
+    font-size: 60px;
+  }
+}
+.jumbo-title { @include jumbo-title; }
+
+@mixin small-text {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  font-family: $suisse-regular;
+  text-transform: uppercase;
+}
+.small-text { @include small-text; }
+
+@mixin caption {
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 1.2;
+  font-family: $font-mono-regular;
+}
+.caption { @include caption; }

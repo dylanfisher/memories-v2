@@ -1,0 +1,16 @@
+<header id="header" class="header mt-2 mb-5">
+  <div class="site-container">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+          <nav id="nav" class="nav d-flex align-items-baseline">
+            <%= link_to 'Memories', root_path, class: 'hover-link jumbo-title' %>
+            <div class="ml-auto">
+              <%= link_to (full_width? ? 'Regular mode' : 'Full Mode'), full_mode_path(redirect_to: url_for), class: 'small-text blank-link-hover', title: 'Images will be displayed at full resolution in full mode.' %>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

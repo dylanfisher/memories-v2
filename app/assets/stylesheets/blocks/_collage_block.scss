@@ -1,0 +1,21 @@
+// Collage Block
+
+.collage-block {
+
+}
+
+.collage-block__canvas {
+  position: relative;
+}
+
+.collage-block__item {
+  position: absolute;
+
+  .forest-image-jump-fix {
+    background-color: transparent;
+  }
+
+  .lazy-image {
+    transition-property: none;
+  }
+}

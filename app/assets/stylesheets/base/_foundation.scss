@@ -1,29 +1,26 @@
 // Foundation
 
-html {
-  @include default-font;
+:root {
+  --responsiveVh: 1vh;
+  --vh: 1vh;
 }
 
-img,
-video {
-  max-width: 100%;
-  height: auto;
-  vertical-align: top;
+html {
+  @include default-font;
+  background: $black;
+  color: $white;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 div {
   vertical-align: top;
 }
 
-.forest-image-jump-fix {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
+.application-wrapper {
+  flex: 1;
 }

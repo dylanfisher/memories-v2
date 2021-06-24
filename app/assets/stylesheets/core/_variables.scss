@@ -1,33 +1,5 @@
 /////////////////////////////////////////////////////////////////////////
 //
-// Bootstrap overrides
-//
-/////////////////////////////////////////////////////////////////////////
-
-$spacer: 1rem;
-$spacers: () !default;
-// stylelint-disable-next-line scss/dollar-variable-default
-$spacers: map-merge(
-  (
-    0: 0,
-    1: ($spacer * .25),
-    2: ($spacer * .5),
-    3: $spacer,
-    4: ($spacer * 1.5),
-    5: ($spacer * 2),
-    6: ($spacer * 2.5),
-    7: ($spacer * 3),
-    8: ($spacer * 4)
-  ),
-  $spacers
-);
-
-// Grid columns
-// $grid-columns:                14 !default;
-// $grid-gutter-width:           30px !default;
-
-/////////////////////////////////////////////////////////////////////////
-//
 // APP VARIABLES
 //
 /////////////////////////////////////////////////////////////////////////
@@ -37,18 +9,23 @@ $white: #FFFFFF;
 $black: #000000;
 
 // Color assignments
+$image-placeholder-background-color: rgba(0, 0, 0, 0.1);
+$highlight-color: #999999;
 
 // Transitions
 $tt: 0.2s;
 
 // Sizes
-$gutter: 15px;
+$gutter: 12px;
+$grid-gutter-width: $gutter * 2;
 
-$site-max-width: 1400px;
-$site-padding-md: 30px;
+$site-max-width: 1524px;
+$site-padding-sm: 0;
 
-$block-margin: 80px;
-$block-margin-md: 120px;
+$block-margin: 50px;
+$block-margin-sm: 80px;
+$large-block-margin: 80px;
+$large-block-margin-sm: 120px;
 
 // Breakpoints
 $screen-xs: 0;

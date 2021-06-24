@@ -1,0 +1,32 @@
+<% cache [@memory, application_cache_key, full_width?], expires_in: 4.weeks do %>
+  <div class="site-container mb-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12">
+          <%= content_tag :h1, md(@memory.title) %>
+          <%= content_tag :div, @memory.date.strftime('%B %d, %Y'), class: 'memory-index__date small-text muted' %>
+          <%= content_tag :div, md(@memory.description) if @memory.description.present? %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= content_tag :div, class: (full_width? ? '' : 'site-container') do %>
+    <div class="container-fluid">
+      <div class="row">
+        <% @memory.media_items.each_with_index do |media_item, index| %>
+          <% if media_item.portrait? %>
+            <% css_class = 'col-10 offset-1 col-md-8 offset-md-2' if media_item.portrait? %>
+          <% else %>
+            <% css_class = 'col-12' %>
+          <% end %>
+          <%= content_tag :div, class: css_class do %>
+            <%= link_to media_item.attachment_url, class: 'blank-link' do %>
+              <%= lazy_image media_item, size: (full_width? ? :original : :large), wrapper_class: "#{'mt-5' unless index.zero?}", class: 'media-item' %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <%#= render_blocks @memory %>
+<% end %>

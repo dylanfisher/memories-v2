@@ -1,0 +1,58 @@
+<%= render 'admin/headers/index', records: @memories, model_name: 'Memory' %>
+
+<div class="table-responsive">
+  <table class="forest-table table table-striped table-sm">
+    <thead>
+      <tr>
+        <% if Memory.statusable? %>
+          <th></th>
+        <% end %>
+        <th><%= table_sorter title: 'ID', path: :admin_memories_path, scope: :by_id, default_order: :desc %></th>
+        <th><%= table_sorter title: 'Slug', path: :admin_memories_path, scope: :by_slug, default_order: :asc %></th>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Media Item Range</th>
+        <th>Media Item Skip Range</th>
+        <th><%= table_sorter title: 'Created&nbsp;at'.html_safe, path: :admin_memories_path, scope: :by_created_at, default_order: :desc %></th>
+        <th><%= table_sorter title: 'Updated&nbsp;at'.html_safe, path: :admin_memories_path, scope: :by_updated_at, default_order: :desc %></th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @memories.each do |memory| %>
+        <tr>
+          <% if Memory.statusable? %>
+            <td><%= status_indicator memory %></td>
+          <% end %>
+          <td><%= memory.id %></td>
+          <td><%= memory.slug %></td>
+          <td><%= memory.title %></td>
+          <td><%= memory.date %></td>
+          <td><%= memory.media_item_range %></td>
+          <td><%= memory.media_item_skip_range %></td>
+          <td><%= forest_date memory.created_at %></td>
+          <td><%= forest_date memory.updated_at %></td>
+          <td width="1">
+            <%= link_to 'Edit', edit_admin_memory_path(memory), class: 'btn btn-xs btn-primary', role: 'button' %>
+          </td>
+          <% if try('memory_path', memory) %>
+            <% if memory.respond_to?(:to_friendly_param) %>
+              <% param = memory.to_friendly_param %>
+            <% else %>
+              <% param = memory %>
+            <% end %>
+            <td width="1">
+              <%= link_to 'Show', memory_path(param), class: 'btn btn-xs btn-info', role: 'button', data: { turbolinks: false } %>
+            </td>
+          <% end %>
+          <td width="1">
+            <%= link_to 'Destroy', [:admin, memory], method: :delete, class: 'btn btn-xs btn-danger', role: 'button', data: { confirm: 'Are you sure you want to destroy this Memory?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= pagy_bootstrap_nav_js(@pagy).html_safe if @pagy.pages > 1 %>

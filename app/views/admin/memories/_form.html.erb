@@ -1,0 +1,31 @@
+<%= simple_form_for([:admin, @memory]) do |f| %>
+  <%= f.error_notification %>
+  <div class="row small-gutters">
+    <%= render 'admin/shared/edit/sidebar', f: f, record: @memory %>
+    <div class="col-md-9">
+      <div class="card">
+        <h1 class="h2 card-header"><%= record_name(@memory) %></h1>
+        <div class="card-body">
+          <div class="form-inputs">
+            <div class="row small-gutters">
+              <div class="col-md-6">
+                <%= f.input :title %>
+                <%= render 'admin/form_inputs/slug', f: f %>
+                <%= f.input :description, markdown: true %>
+                <%= f.button :submit, class: 'btn-success d-md-none' %>
+              </div>
+              <div class="col-md-6">
+                <%= render 'admin/form_inputs/status', f: f, record: @memory %>
+                <%= f.input :date, as: :datepicker %>
+                <%= f.input :media_item_range, hint: 'Specify a range, such as 123-145 or comma-separated IDs to include.' %>
+                <%= f.input :media_item_skip_range, hint: 'Specify a range or comma-separated IDs to skip.' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# Uncomment the following partial if the record is blockable. Optionally pass the block_layout or block_kinds to the partial. %>
+      <%= render 'admin/block_record/block_layout', f: f, block_layout: @block_layout, block_kinds: @block_kinds %>
+    </div>
+  </div>
+<% end %>

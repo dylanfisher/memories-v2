@@ -1,0 +1,22 @@
+// Memory index
+
+.memory-index__memory {
+  margin-top: map-get($spacers, 5);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.memory-index__date {
+  margin-left: 1px;
+  margin-top: 4px;
+}
+
+.memory-index__image {
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,37 @@
+// Screensaver
+
+.html--scrensaver {
+  height: 100%;
+}
+
+.screensaver {
+  background-color: $black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+
+  &[data-orientation="portrait"] {
+    @media (orientation: portrait) {
+      background-size: cover;
+    }
+
+    @media (orientation: landscape) {
+      background-size: contain;
+    }
+  }
+
+  &[data-orientation="landscape"] {
+    @media (orientation: landscape) {
+      background-size: cover;
+    }
+
+    @media (orientation: portrait) {
+      background-size: contain;
+    }
+  }
+
+  .exif-data__text {
+    display: none;
+  }
+}

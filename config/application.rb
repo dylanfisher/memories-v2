@@ -34,5 +34,35 @@ module MemoriesV2
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.time_zone = 'Eastern Time (US & Canada)'
+
+    I18n.available_locales = [:en]
+
+    # Dynamic errors via the application's router
+    config.exceptions_app = self.routes
+
+    config.autoload_paths << "#{config.root}/app/models/blocks"
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
+
+    config.active_job.queue_adapter = :sucker_punch
+
+    config.middleware.insert_after ActionDispatch::Static, Rack::Deflater
+
+    # Disable Zeitwerk autolading of decorator classes
+    Rails.autoloaders.main.ignore(Rails.root.join('app/decorators'))
+
+    config.to_prepare do
+      # Load application's model / class decorators
+      Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+    end
   end
 end

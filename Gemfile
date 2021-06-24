@@ -15,6 +15,7 @@ gem 'dalli'
 gem 'rack-cors', require: 'rack/cors'
 gem 'sprockets', '~> 3.7.2'
 gem 'sucker_punch', '~> 2.0'
+gem 'exifr'
 
 group :development do
   gem 'listen', '~> 3.3'

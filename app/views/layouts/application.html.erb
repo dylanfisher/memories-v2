@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js sr <%= @html_classes.try(:join, ' ') %>" lang="en">
   <head>
-    <title>MemoriesV2</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
+    <%= render 'layouts/shared_head' %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
-
   <body>
-    <%= yield %>
+    <%= render 'shared/header' %>
+    <main id="application-wrapper" class="application-wrapper">
+      <%= render 'shared/notification' if @notification.present? %>
+      <%= yield %>
+    </main>
+    <%= render 'shared/footer' %>
+    <%= javascript_include_tag 'application', defer: true %>
   </body>
 </html>

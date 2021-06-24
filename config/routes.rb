@@ -1,3 +1,15 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # Public
+  root to: 'memories#index'
+
+  resources :memories, only: [:index, :show]
+
+  get 'screensaver', to: 'screensaver#index'
+  get 'full-mode', to: 'options#full'
+
+  # Admin
+  namespace :admin do
+    resources :locations
+    resources :memories
+  end
 end
