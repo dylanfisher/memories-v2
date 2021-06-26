@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html id="screensaver" class="screensaver" lang="en">
+  <head>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
+  <body data-screensaver-path="<%= screensaver_path %>">
+    <%= yield %>
+    <%= javascript_include_tag 'application', defer: true %>
+  </body>
+</html>
