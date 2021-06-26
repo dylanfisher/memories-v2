@@ -4,7 +4,9 @@ module ApplicationHelper
   end
 
   def exif_data(media_item)
-    d = media_item.exif_data
+    d = media_item.attachment.metadata
+
+    return unless %w(lens_model exposure_time aperture_value iso_speed_ratings).all? { |x| d[x].present? }
 
     is_zoom = d['lens_model'].match(/\d*-\d*mm/)
     zoom_focal_length = " at #{d['focal_length'].to_i}mm"

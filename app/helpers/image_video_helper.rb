@@ -48,7 +48,8 @@ module ImageVideoHelper
           image_tag placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options
       else
         image_jump_fix media_item, class: options.delete(:wrapper_class) do
-          image_tag placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options
+          concat exif_data media_item
+          concat image_tag(placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options)
         end
       end
     end
