@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/dylanfisher/forest.git
-  revision: cfcf335610988dd4967eea22769e7eeea44dd794
+  revision: 002e50943a7ceb86bbb7627bd876ce05c043119e
   specs:
-    forest (2.14.0)
+    forest (2.15.0)
       aws-sdk-s3
       bootstrap (~> 4.0)
       cocoon
@@ -89,7 +89,7 @@ GEM
     autoprefixer-rails (10.2.5.1)
       execjs (> 0)
     aws-eventstream (1.1.1)
-    aws-partitions (1.471.0)
+    aws-partitions (1.472.0)
     aws-sdk-core (3.115.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
