@@ -6,6 +6,8 @@ class Memory < Forest::ApplicationRecord
   validates :title, :date, presence: true
 
   scope :by_date, -> (orderer = :desc) { order(date: orderer) }
+  scope :from_date, -> (date) { where('memories.date >= ?', date) }
+  scope :to_date, -> (date) { where('memories.date <= ?', date) }
 
   def self.resource_description
     'Reflecting on the past.'
@@ -14,9 +16,17 @@ class Memory < Forest::ApplicationRecord
   def media_items
     return MediaItem.none if media_item_range.blank?
 
-    MediaItem.where(id: parse_range(media_item_range))
-             .where.not(id: parse_range(media_item_skip_range))
+    MediaItem.where(id: parsed_media_item_range)
+             .where.not(id: parsed_media_item_skip_range)
              .by_title
+  end
+
+  def parsed_media_item_range
+    parse_range(media_item_range)
+  end
+
+  def parsed_media_item_skip_range
+    parse_range(media_item_skip_range)
   end
 
   # def media_items

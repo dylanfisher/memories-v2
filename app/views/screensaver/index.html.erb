@@ -1,1 +1,7 @@
-<%= image_tag @media_item.attachment_url, id: 'screensaver-preload', class: 'd-none', data: { orientation: @media_item.landscape? ? 'landscape' : 'portrait' } %>
+<% if @media_item.present? %>
+  <%= image_tag @media_item.attachment_url, id: 'screensaver-preload', class: 'd-none', data: { orientation: @media_item.landscape? ? 'landscape' : 'portrait' } %>
+<% else %>
+  <div class="text-center my-5">
+    No media items for this scope.
+  </div>
+<% end %>
