@@ -25,7 +25,7 @@ class ScreensaverController < ForestController
       # binding.pry
 
       media_item_range = memories.collect(&:parsed_media_item_range)
-      media_item_skip_range = memories.collect(&:parsed_media_item_skip_range)
+      media_item_skip_range = memories.collect(&:parsed_media_item_skip_range).reject { |x| x == 0 }
 
       media_item_scope = MediaItem.where(id: media_item_range)
                                   .where.not(id: media_item_skip_range)
