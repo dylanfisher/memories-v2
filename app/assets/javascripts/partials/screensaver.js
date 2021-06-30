@@ -26,7 +26,10 @@ App.pageLoad.push(function() {
   });
 
   $(document).on('keyup', function(e) {
-    if ( timer ) window.clearTimeout(timer);
-    getImage();
+    // Space key
+    if ( e.keyCode == 32 ) {
+      if ( timer ) window.clearTimeout(timer);
+      getImage();
+    }
   });
 });
