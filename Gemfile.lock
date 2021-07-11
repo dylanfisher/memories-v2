@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/dylanfisher/forest.git
-  revision: 002e50943a7ceb86bbb7627bd876ce05c043119e
+  revision: a3ab4d3961d3c83265f89cd694d8eb5b15fe78f9
   specs:
-    forest (2.15.0)
+    forest (2.17.1)
       aws-sdk-s3
       bootstrap (~> 4.0)
       cocoon
@@ -84,13 +84,13 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     autoprefixer-rails (10.2.5.1)
       execjs (> 0)
     aws-eventstream (1.1.1)
-    aws-partitions (1.472.0)
-    aws-sdk-core (3.115.0)
+    aws-partitions (1.476.0)
+    aws-sdk-core (3.116.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
@@ -102,7 +102,7 @@ GEM
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.2.3)
+    aws-sigv4 (1.2.4)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bootsnap (1.7.5)
@@ -213,7 +213,7 @@ GEM
       method_source
       rake (>= 0.13)
       thor (~> 1.0)
-    rake (13.0.3)
+    rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)

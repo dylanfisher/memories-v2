@@ -8,7 +8,6 @@ module ImageVideoHelper
     options.merge!(alt: alt) if alt.present?
     size_mobile = options.delete(:size_mobile) || :medium
     css_style = options.delete(:style).presence || ''
-    placeholder = options.delete(:no_placeholder) ? uri_image_placeholder : media_item.attachment_url(:small)
 
     if media_item.attachment_content_type =~ /svg\+xml/
       size = :original
@@ -27,7 +26,7 @@ module ImageVideoHelper
       css_style << "background-position: #{point_of_interest_x}% #{point_of_interest_y}%;"
     end
 
-    css_style << "background-image: url(#{placeholder});"
+    css_style << "background-image: url(#{uri_image_placeholder});"
 
     if options.delete(:background)
       options.merge!('aria-label': alt) if alt.present?
@@ -45,11 +44,11 @@ module ImageVideoHelper
                   **options
     else
       if options[:skip_jump_fix]
-          image_tag placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options
+          image_tag uri_image_placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options
       else
         image_jump_fix media_item, class: options.delete(:wrapper_class) do
           concat exif_data media_item
-          concat image_tag(placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options)
+          concat image_tag(uri_image_placeholder, class: "lazy-image lazyload #{options.delete(:class)}", data: data, **options)
         end
       end
     end
