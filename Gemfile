@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.0.1'
+ruby '3.0.2'
 
 gem 'forest', '~> 2.0', git: 'https://github.com/dylanfisher/forest.git'
 
