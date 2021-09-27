@@ -7,14 +7,18 @@ App.pageLoad.push(function() {
 
   var timer;
   var url = $el.attr('data-screensaver-path');
+  var duration = parseInt( App.getParameterByName('duration') ) || 8000;
+  var skipAutoplay = App.getParameterByName('autoplay');
   var getImage = function() {
     $.ajax({
       url: url,
       dataType: 'script'
     }).done(function(data) {
-      timer = window.setTimeout(function() {
-        getImage();
-      }, 8000);
+      if ( !skipAutoplay ) {
+        timer = window.setTimeout(function() {
+          getImage();
+        }, duration);
+      }
     });
   };
 
