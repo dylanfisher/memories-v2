@@ -14,12 +14,7 @@
     <div class="container-fluid">
       <div class="row">
         <% @memory.media_items.each_with_index do |media_item, index| %>
-          <% if media_item.portrait? %>
-            <% css_class = 'col-10 offset-1 col-md-8 offset-md-2' if media_item.portrait? %>
-          <% else %>
-            <% css_class = 'col-12' %>
-          <% end %>
-          <%= content_tag :div, class: css_class do %>
+          <%= content_tag :div, class: "col-12 #{'portrait-image-col' if media_item.portrait?}" do %>
             <%= link_to media_item.attachment_url, class: 'blank-link' do %>
               <%= lazy_image media_item, size: (full_width? ? :original : :large), wrapper_class: "#{'mt-5' unless index.zero?}", class: 'media-item' %>
             <% end %>
