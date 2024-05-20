@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def http_authenticate
     unless Rails.env.development?
       authenticate_or_request_with_http_basic do |username, password|
-        username == 'memories' && password == 'memories'
+        username == 'dylan' && password == 'nostalgia'
       end
     end
   end
