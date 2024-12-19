@@ -54,7 +54,9 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  if ENV['MEMCACHEDCLOUD_SERVERS']
+  if ENV["MEMCACHED_URL"]
+    config.cache_store = :mem_cache_store, ENV["MEMCACHED_URL"]
+  elsif ENV['MEMCACHEDCLOUD_SERVERS']
     config.cache_store = :mem_cache_store,
                          ENV['MEMCACHEDCLOUD_SERVERS'].split(','), {
                            username: ENV['MEMCACHEDCLOUD_USERNAME'],

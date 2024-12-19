@@ -1,4 +1,4 @@
-<% cache [@memory, application_cache_key, full_width?], expires_in: 4.weeks do %>
+<% cache [@memory, current_user.try(:admin?), application_cache_key, full_width?], expires_in: 4.weeks do %>
   <div class="site-container mb-3">
     <div class="container-fluid">
       <div class="row">
