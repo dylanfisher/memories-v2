@@ -4,6 +4,8 @@ class MemoriesController < ForestController
   before_action :set_memory, only: [:show]
 
   def index
+    @page_title = 'Home'
+
     if current_user && current_user.admin?
       @pagy, @memories = pagy apply_scopes(Memory.published.by_date)
     else
