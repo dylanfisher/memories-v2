@@ -13,7 +13,7 @@
   <%= content_tag :div, class: (full_width? ? '' : 'site-container') do %>
     <div class="container-fluid">
       <div class="row">
-        <% @memory.media_items.each_with_index do |media_item, index| %>
+        <% @media_items.each_with_index do |media_item, index| %>
           <%= content_tag :div, class: "col-12 #{'portrait-image-col' if media_item.portrait?}" do %>
             <%= link_to media_item.attachment_url, class: 'blank-link' do %>
               <%= lazy_image media_item, size: (full_width? ? :original : :large), wrapper_class: "#{'mt-5' unless index.zero?}", class: 'media-item' %>
@@ -23,5 +23,4 @@
       </div>
     </div>
   <% end %>
-  <%#= render_blocks @memory %>
 <% end %>

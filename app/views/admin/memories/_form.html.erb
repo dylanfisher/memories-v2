@@ -20,6 +20,7 @@
                 <%= f.input :public, label: 'Visible to public' %>
                 <%= f.input :media_item_range, hint: 'Specify a range, such as 123-145 or comma-separated IDs to include.' %>
                 <%= f.input :media_item_skip_range, hint: 'Specify a range or comma-separated IDs to skip.' %>
+                <%= link_to 'View media items for this range', admin_media_items_path(range: f.object.media_item_range) if f.object.media_item_range.present? %>
               </div>
             </div>
           </div>

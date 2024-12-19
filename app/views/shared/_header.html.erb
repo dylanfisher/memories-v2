@@ -30,7 +30,7 @@
     <ul class="my-0">
       <li>Press <code>R</code> to shuffle thumbnails on the index.</li>
       <li>Press <code>◀</code> and <code>▶</code> arrow keys to navigate on single pages.</li>
-      <li>This site is meant to be viewed on a wide screen desktop computer. When viewing the screen at least <code>1,530</code> pixels wide, images will be scaled exactly 50%, resulting in the sharpest image quality.</li>
+      <li>This site is meant to be viewed on a wide screen desktop computer. When viewing the screen at least <code>1,530</code> pixels wide, images will be scaled at exactly 50%, resulting in the sharpest image quality.</li>
       <% cache ['photo_count', MediaItem.cache_key], expires_in: 4.weeks do %>
         <li><code><%= number_with_delimiter MediaItem.count %></code> photos posted since <code><%= Memory.by_date.last.date.strftime("%B %d, %Y") %></code>, of which <code><%= number_with_delimiter MediaItem.where('created_at >= ?', Date.current.beginning_of_year).count %></code> were taken since the start of <%= Date.current.year %>.</li>
       <% end %>

@@ -1,5 +1,10 @@
-<%= content_tag :div, class: 'memory-index__memory not-initialized col-12', data: { image_urls: memory.media_items.to_a.collect { |m| m.attachment_url(:small) } } do %>
-  <% if memory.media_items.present? %>
+<% if current_user.try(:admin?) %>
+  <% media_items = memory.media_items %>
+<% else %>
+  <% media_items = memory.media_items.where(hide_from_public: false) %>
+<% end %>
+<%= content_tag :div, class: 'memory-index__memory not-initialized col-12', data: { image_urls: media_items.to_a.collect { |m| m.attachment_url(:small) } } do %>
+  <% if media_items.present? %>
     <%= link_to '', memory_path(memory.to_friendly_param), class: 'memory-index__preview-area row small-gutters mb-2 blank-link' %>
   <% end %>
   <%= link_to md(memory.title), memory_path(memory.to_friendly_param), class: 'blank-link-hover' %>

@@ -18,6 +18,12 @@ class MemoriesController < ForestController
 
   def show
     authorize @memory
+
+    if current_user.try(:admin?)
+      @media_items = @memory.media_items
+    else
+      @media_items = @memory.media_items.where(hide_from_public: false)
+    end
   end
 
   private

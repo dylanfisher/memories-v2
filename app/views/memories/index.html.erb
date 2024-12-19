@@ -1,11 +1,9 @@
 <div class="site-container">
   <div class="container-fluid">
     <div id="memories-container" class="row">
-      <% cache ['memories_index', current_user.try(:admin?), Memory.cache_key], expires_in: 4.weeks do %>
+      <% cache ['memories_index', current_user.try(:admin?), application_cache_key], expires_in: 4.weeks do %>
         <% @memories.each_with_index do |memory, index| %>
-          <% cache memory, expires_in: 4.weeks do %>
-            <%= render 'memories/memory', memory: memory, index: index %>
-          <% end %>
+          <%= render 'memories/memory', memory: memory, index: index %>
         <% end %>
       <% end %>
       <% if @pagy.next.present? %>

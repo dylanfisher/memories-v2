@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_19_043651) do
+ActiveRecord::Schema.define(version: 2024_12_19_060613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -72,10 +72,12 @@ ActiveRecord::Schema.define(version: 2024_12_19_043651) do
     t.float "point_of_interest_y", default: 50.0
     t.string "attachment_content_type"
     t.boolean "retain_source", default: false, null: false
+    t.boolean "hide_from_public", default: false, null: false
     t.index "((attachment_data -> 'derivatives'::text))", name: "index_media_items_on_attachment_data_derivatives", using: :gin
     t.index ["attachment_content_type"], name: "index_media_items_on_attachment_content_type"
     t.index ["attachment_data"], name: "index_media_items_on_attachment_data", using: :gin
     t.index ["created_at"], name: "index_media_items_on_created_at"
+    t.index ["hide_from_public"], name: "index_media_items_on_hide_from_public"
     t.index ["media_item_status"], name: "index_media_items_on_media_item_status"
     t.index ["slug"], name: "index_media_items_on_slug", unique: true
   end

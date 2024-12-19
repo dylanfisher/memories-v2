@@ -8,8 +8,8 @@
           <th></th>
         <% end %>
         <th><%= table_sorter title: 'ID', path: :admin_memories_path, scope: :by_id, default_order: :desc %></th>
-        <th><%= table_sorter title: 'Slug', path: :admin_memories_path, scope: :by_slug, default_order: :asc %></th>
         <th>Title</th>
+        <th>Public</th>
         <th>Date</th>
         <th>Media Item Range</th>
         <th>Media Item Skip Range</th>
@@ -26,8 +26,8 @@
             <td><%= status_indicator memory %></td>
           <% end %>
           <td><%= memory.id %></td>
-          <td><%= memory.slug %></td>
           <td><%= memory.title %></td>
+          <td><%= memory.public ? '✅' : '❌' %></td>
           <td><%= memory.date %></td>
           <td><%= memory.media_item_range %></td>
           <td><%= memory.media_item_skip_range %></td>

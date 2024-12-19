@@ -1,0 +1,122 @@
+<%= simple_form_for([:admin, @media_item]) do |f| %>
+  <%# TODO: replace with shared form error notification helper or partial %>
+  <%= f.error_notification %>
+  <% if @media_item.errors[:base].present? %>
+    <div class="alert alert-danger">
+      <%= f.error :base %>
+    </div>
+  <% end %>
+  <div class="row small-gutters">
+    <%= render 'admin/shared/edit/sidebar', f: f, record: @media_item %>
+    <div class="col-md-9">
+      <%= render 'admin/shared/localization/nav_tabs' %>
+      <div class="card">
+        <h1 class="h2 card-header">Metadata</h1>
+        <div class="card-body">
+          <div class="form-inputs">
+            <div class="row small-gutters">
+              <div class="col-md-6 tab-content">
+                <%= f.input :hide_from_public %>
+                <%= f.input :title, placeholder: 'The title will be generated automatically from the file name if left blank.', hint: 'The title is used to identify the image on the backend. It is not usually visible to the user, and typically you do not need to edit this field.' %>
+                <%= render 'admin/form_inputs/slug', f: f %>
+                <%= localized_inputs f, :alternative_text, hint: 'The alt attribute provides alternative information for an image if a user for some reason cannot view it (because of slow connection, an error in the src attribute, or if the user uses a screen reader).' %>
+                <%= localized_inputs f, :caption, markdown: true %>
+                <%= f.button :submit, class: 'btn-success' %>
+              </div>
+              <div class="col-md-6 file-upload-wrapper">
+                <div class="file-upload">
+                  <label>File Upload</label>
+                  <%= f.hidden_field :attachment, value: @media_item.cached_attachment_data, class: 'file-upload__data' %>
+                  <%= f.file_field :attachment, class: 'file-upload__file' %>
+                </div>
+
+                <div class="form-group">
+                  <div class="file-upload-notifications"></div>
+                  <% unless @media_item.new_record? %>
+                    <div class="upload-preview">
+                      <% if @media_item.try(:supports_derivatives?) && @media_item.try(:image?) && @media_item.try(:point_of_interest_x).present? && @media_item.try(:point_of_interest_y).present? %>
+                        <label class="media-item__point-of-interest__label">Point of Interest</label>
+                        <div id="media-item__point-of-interest" class="media-item__point-of-interest">
+                          <%= content_tag :div, nil, id: 'media-item__point-of-interest__crosshair', class: 'media-item__point-of-interest__crosshair', style: "top: #{@media_item.point_of_interest_y}%; left: #{@media_item.point_of_interest_x}%;" %>
+                          <%= image_tag @media_item.attachment_url(:medium) %>
+                          <%= f.input :point_of_interest_x, as: :hidden %>
+                          <%= f.input :point_of_interest_y, as: :hidden %>
+                        </div>
+                        <small class="form-text text-muted">Click the image to change the point of interest of the image. The point of interest is used to determine where to crop the image in some contexts.</small>
+                      <% elsif @media_item.try(:image?) %>
+                        <% if @media_item.supports_derivatives? %>
+                          <%= image_tag @media_item.attachment_url(:medium).presence || uri_image_placeholder %>
+                        <% else %>
+                          <%= image_tag @media_item.attachment_url %>
+                        <% end %>
+                      <% elsif @media_item.try(:video?) %>
+                        <%= video_tag @media_item.attachment_url, controls: true %>
+                      <% elsif @media_item.try(:file?) %>
+                        <div class="mt-2">
+                          <%= bootstrap_icon 'file-richtext', style: 'width: 36px;' %>
+                          <%= @media_item.attachment_file_name.presence || @media_item.title %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+                <% if @media_item.attachment.present? %>
+                  <div class="form-group">
+                    <label class="control-label">Attachment URLs:</label>
+                    <% if @media_item.supports_derivatives? %>
+                      <ul>
+                        <li><%= link_to 'Original', @media_item.attachment_url, target: '_blank' %></li>
+                        <li>
+                          <% if @media_item.attachment_derivatives[:large].present? %>
+                            <%= link_to 'Large', @media_item.attachment_url(:large), target: '_blank' %>
+                          <% else %>
+                            <span class="text-muted">Large <%= @media_item.created_at < DateTime.current - 1.hour ? "(failed, #{link_to(content_tag(:u, 'reprocess derivative'), reprocess_admin_media_item_path(@media_item, derivative_name: :large), method: :post, class: 'text-muted')})".html_safe : " – processing" %></span>
+                          <% end %>
+                        </li>
+                        <li>
+                          <% if @media_item.attachment_derivatives[:medium].present? %>
+                            <%= link_to 'Medium', @media_item.attachment_url(:medium), target: '_blank' %>
+                          <% else %>
+                            <span class="text-muted">Medium <%= @media_item.created_at < DateTime.current - 1.hour ? "(failed, #{link_to(content_tag(:u, 'reprocess derivative'), reprocess_admin_media_item_path(@media_item, derivative_name: :medium), method: :post, class: 'text-muted')})".html_safe : " – processing" %></span>
+                          <% end %>
+                        </li>
+                        <li>
+                          <% if @media_item.attachment_derivatives[:small].present? %>
+                            <%= link_to 'Small', @media_item.attachment_url(:small), target: '_blank' %>
+                          <% else %>
+                            <span class="text-muted">Small <%= @media_item.created_at < DateTime.current - 1.hour ? "(failed, #{link_to(content_tag(:u, 'reprocess derivative'), reprocess_admin_media_item_path(@media_item, derivative_name: :small), method: :post, class: 'text-muted')})".html_safe : " – processing" %></span>
+                          <% end %>
+                        </li>
+                        <li>
+                          <% if @media_item.attachment_derivatives[:thumb].present? %>
+                            <%= link_to 'Thumb', @media_item.attachment_url(:thumb), target: '_blank' %>
+                          <% else %>
+                            <span class="text-muted">Thumb <%= @media_item.created_at < DateTime.current - 1.hour ? "(failed, #{link_to(content_tag(:u, 'reprocess derivative'), reprocess_admin_media_item_path(@media_item, derivative_name: :thumb), method: :post, class: 'text-muted')})".html_safe : " – processing" %></span>
+                          <% end %>
+                        </li>
+                      </ul>
+                    <% else %>
+                      <ul>
+                        <li><%= link_to 'Original', @media_item.attachment_url, target: '_blank' %></li>
+                      </ul>
+                    <% end %>
+                  </div>
+                <% end %>
+                <% if @media_item.image? && !@media_item.try(:jpeg?) && @media_item.supports_derivatives? %>
+                  <div class="card bg-light">
+                    <div class="card-body pb-1">
+                      <%= f.input :retain_source, hint: 'By default all images will be transformed to appropriately sized JPG images, which load efficiently in the browser. However, if you have a PNG or GIF image with transparency, you may wish to retain the original image format. In that case, check this box to regenerate the image at the original file type.<br><br>*Note: changing the retain source option will delete previous versions of the image. URLs for those existing images will stop working.'.html_safe %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% if @media_item.try(:vimeo_video?) && lookup_context.exists?('admin/shared/forest/vimeo/vimeo_data', [], true) %>
+        <%= render 'admin/shared/forest/vimeo/vimeo_data', f: f, record: @media_item %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
