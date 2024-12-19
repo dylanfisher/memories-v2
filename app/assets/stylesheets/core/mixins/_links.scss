@@ -10,6 +10,7 @@
 @mixin blank-link {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 .blank-link { @include blank-link; }
 

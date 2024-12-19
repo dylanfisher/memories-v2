@@ -8,6 +8,7 @@ class Memory < Forest::ApplicationRecord
   scope :by_date, -> (orderer = :desc) { order(date: orderer) }
   scope :from_date, -> (date) { where('memories.date >= ?', date) }
   scope :to_date, -> (date) { where('memories.date <= ?', date) }
+  scope :public_only, -> { where(public: true) }
 
   def self.resource_description
     'Reflecting on the past.'

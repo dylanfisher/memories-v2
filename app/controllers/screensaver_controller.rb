@@ -2,6 +2,10 @@ class ScreensaverController < ForestController
   layout 'screensaver'
 
   def index
+    if !current_user || !current_user.admin?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+
     pattern = /^\d{4}-\d{2}-\d{2}$/
     from = params[:from]&.match(pattern)
     to = params[:to]&.match(pattern)
@@ -21,8 +25,6 @@ class ScreensaverController < ForestController
         to_date = Date.parse(to[0])
         memories = memories.to_date(to_date)
       end
-
-      # binding.pry
 
       media_item_range = memories.collect(&:parsed_media_item_range)
       media_item_skip_range = memories.collect(&:parsed_media_item_skip_range).reject { |x| x == 0 }

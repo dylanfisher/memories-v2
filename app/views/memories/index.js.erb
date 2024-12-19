@@ -1,0 +1,13 @@
+<% cache ['memories_index', Memory.cache_key], expires_in: 4.weeks do %>
+  <% @memories.each_with_index do |memory, index| %>
+    <% cache memory, expires_in: 4.weeks do %>
+      $('#memories-container').append("<%= j render('memories/memory', memory: memory, index: index) %>");
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if @pagy.next %>
+  $('#next-page').data('page', <%= @pagy.next %>);
+<% else %>
+  $('#next-page').remove();
+<% end %>

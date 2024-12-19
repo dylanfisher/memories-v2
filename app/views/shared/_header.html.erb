@@ -4,10 +4,17 @@
       <div class="row">
         <div class="col-sm-12">
           <nav id="nav" class="nav d-flex align-items-baseline">
-            <%= link_to 'Memories', root_path, class: 'hover-link jumbo-title' %>
-            <% if controller_name == 'memories' && action_name == 'show' %>
-              <div class="ml-auto">
-                <%= link_to (full_width? ? 'Regular mode' : 'Full Mode'), full_mode_path(redirect_to: url_for), class: 'small-text blank-link-hover', title: 'Images will be displayed at full resolution in full mode.' %>
+            <%= link_to 'photos.dylanfisher.com', root_path, class: 'small-text hover-link' %>
+            <% if controller_name == 'memories' %>
+              <div class="ml-auto d-flex align-items-baseline">
+                <% if controller_name == 'memories' && action_name == 'show' %>
+                  <%= link_to (full_width? ? 'Regular mode' : 'Full Mode'), full_mode_path(redirect_to: url_for), class: 'small-text blank-link-hover d-flex', title: 'Images will be displayed at full resolution in full mode.' %>
+                <% end %>
+                <% if controller_name == 'memories' %>
+                  <div class="ml-3">
+                    <span id="open-popover" class="small-text blank-link-hover d-flex" popover-target="popupContent">Notes</span>
+                  </div>
+                <% end %>
               </div>
             <% end %>
           </nav>
@@ -16,3 +23,17 @@
     </div>
   </div>
 </header>
+
+<div id="help-popover" class="popover d-none">
+  <div class="popover__inner small-text-x d-flex flex-column">
+    <div class="popover__close blank-link-hover">×</div>
+    <ul class="my-0">
+      <li>Press <code>R</code> to shuffle thumbnails on the index.</li>
+      <li>Press <code>◀</code> and <code>▶</code> arrow keys to navigate on single pages.</li>
+      <li>This site is meant to be viewed on a wide screen desktop computer. When viewing the screen at least <code>1,530</code> pixels wide, images will be scaled exactly 50%, resulting in the sharpest image quality.</li>
+      <% cache ['photo_count', MediaItem.cache_key], expires_in: 4.weeks do %>
+        <li><code><%= number_with_delimiter MediaItem.count %></code> photos posted since <code><%= Memory.by_date.last.date.strftime("%B %d, %Y") %></code>, of which <code><%= number_with_delimiter MediaItem.where('created_at >= ?', Date.current.beginning_of_year).count %></code> were taken since the start of <%= Date.current.year %>.</li>
+      <% end %>
+    </ul>
+  </div>
+</div>

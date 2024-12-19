@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_22_184831) do
+ActiveRecord::Schema.define(version: 2024_12_19_043651) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "base_blocks", id: :serial, force: :cascade do |t|
@@ -90,7 +91,9 @@ ActiveRecord::Schema.define(version: 2021_06_22_184831) do
     t.jsonb "blockable_metadata", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "public", default: false, null: false
     t.index ["blockable_metadata"], name: "index_memories_on_blockable_metadata", using: :gin
+    t.index ["public"], name: "index_memories_on_public"
     t.index ["slug"], name: "index_memories_on_slug", unique: true
     t.index ["status"], name: "index_memories_on_status"
   end

@@ -14,7 +14,9 @@
 }
 
 .memory-index__image {
+  background-color: #272727;
   transition: opacity 0.15s;
+  opacity: 1;
 
   &:hover {
     opacity: 0.8;
