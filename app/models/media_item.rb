@@ -7,7 +7,7 @@ class MediaItem < Forest::ApplicationRecord
     range_match = range.to_s.match(/(\d+)-(\d+)/)
     from = range_match[1].to_i
     to = range_match[2].to_i
-    where('id > ? AND id < ?', from, to)
+    where('id >= ? AND id <= ?', from, to).by_title
   }
 
   def self.additional_permitted_params
