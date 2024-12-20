@@ -1,12 +1,14 @@
 <% if current_user.try(:admin?) %>
   <% media_items = memory.media_items %>
+  <% title_to_use = memory.title %>
 <% else %>
   <% media_items = memory.media_items.where(hide_from_public: false) %>
+  <% title_to_use = memory.public_title.presence || memory.title %>
 <% end %>
 <%= content_tag :div, class: 'memory-index__memory not-initialized col-12', data: { image_urls: media_items.to_a.collect { |m| m.attachment_url(:small) } } do %>
   <% if media_items.present? %>
     <%= link_to '', memory_path(memory.to_friendly_param), class: 'memory-index__preview-area row small-gutters mb-2 blank-link' %>
   <% end %>
-  <%= link_to md(memory.title), memory_path(memory.to_friendly_param), class: 'blank-link-hover' %>
+  <%= link_to md(title_to_use), memory_path(memory.to_friendly_param), class: 'blank-link-hover' %>
   <%= content_tag :div, memory.date.strftime('%B %d, %Y'), class: 'memory-index__date small-text muted' %>
 <% end %>

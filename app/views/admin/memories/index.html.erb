@@ -11,8 +11,8 @@
         <th>Title</th>
         <th>Public</th>
         <th>Date</th>
-        <th>Media Item Range</th>
-        <th>Media Item Skip Range</th>
+        <th>Range</th>
+        <th>Skip</th>
         <th><%= table_sorter title: 'Created&nbsp;at'.html_safe, path: :admin_memories_path, scope: :by_created_at, default_order: :desc %></th>
         <th><%= table_sorter title: 'Updated&nbsp;at'.html_safe, path: :admin_memories_path, scope: :by_updated_at, default_order: :desc %></th>
         <th colspan="3"></th>
@@ -26,7 +26,7 @@
             <td><%= status_indicator memory %></td>
           <% end %>
           <td><%= memory.id %></td>
-          <td><%= memory.title %></td>
+          <td><%= memory.title %><%= ' | '.html_safe if memory.public_title.present? %><%= content_tag :em, memory.public_title, style: 'color: red;' if memory.public_title.present? %></td>
           <td><%= memory.public ? '✅' : '❌' %></td>
           <td><%= memory.date %></td>
           <td><%= memory.media_item_range %></td>

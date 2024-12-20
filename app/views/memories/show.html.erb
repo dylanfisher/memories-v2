@@ -1,9 +1,10 @@
 <% cache [@memory, current_user.try(:admin?), application_cache_key, full_width?], expires_in: 4.weeks do %>
+  <% title_to_use = current_user.try(:admin?) ? @memory.title : (@memory.public_title.presence || @memory.title) %>
   <div class="site-container mb-3">
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12">
-          <%= content_tag :h1, md(@memory.title) %>
+          <%= content_tag :h1, md(title_to_use) %>
           <%= content_tag :div, @memory.date.strftime('%B %d, %Y'), class: 'memory-index__date small-text muted' %>
           <%= content_tag :div, md(@memory.description) if @memory.description.present? %>
         </div>
