@@ -11,5 +11,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :locations
     resources :memories
+    resources :media_items, except: [:show], path: 'media-items' do
+      post 'update_multiple', on: :collection
+      post 'reprocess', on: :member
+      post 'hide_from_public', on: :member
+      post 'show_to_public', on: :member
+    end
   end
 end

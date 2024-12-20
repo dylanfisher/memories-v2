@@ -1,5 +1,5 @@
 class Admin::MediaItemsController < Admin::ForestController
-  before_action :set_media_item, only: [:show, :edit, :update, :reprocess, :destroy]
+  before_action :set_media_item, only: [:show, :edit, :update, :reprocess, :destroy, :hide_from_public, :show_to_public]
   before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   has_scope :by_date
@@ -42,6 +42,18 @@ class Admin::MediaItemsController < Admin::ForestController
   # GET /media_items/1/edit
   def edit
     authorize @media_item
+  end
+
+  def hide_from_public
+    authorize @media_item, :update?
+    @media_item.update(hide_from_public: true)
+    respond_to :js
+  end
+
+  def show_to_public
+    authorize @media_item, :update?
+    @media_item.update(hide_from_public: false)
+    respond_to :js
   end
 
   # POST /media_items

@@ -1,7 +1,7 @@
 <%# Make sure to update the media item preview in the following file when changing this partial.
     app/assets/javascripts/forest/admin/partials/media_item_chooser_modal.js.erb %>
 
-<%= content_tag :div, class: "media-item--grid mb-3 col-xs-4 col-sm-3 col-md-2" do %>
+<%= content_tag :div, class: "media-item--grid mb-3 col-xs-4 col-sm-3 col-md-2", data: { media_library_media_item_id: media_item.id } do %>
   <% if media_item.image? %>
     <% attachment_or_placeholder_url = media_item.attachment.present? ? media_item.attachment_url(:small) : '#TODO' %>
     <% attachment_or_placeholder_url_large = media_item.attachment.present? ? media_item.attachment_url(:medium) : '#TODO' %>
@@ -46,6 +46,11 @@
                     style: "background-image: url(#{attachment_or_placeholder_url}); #{css_style}" %>
   <% end %>
   <div class="media-item--grid__buttons">
+    <% if media_item.hide_from_public? %>
+      <%= content_tag :div, '✅', class: 'media-item__button media-item--grid__button media-item--grid__button__hide-from-public glyphicon', data: { hide_from_public_path: show_to_public_admin_media_item_path(media_item) }, title: 'Hide from public' %>
+    <% else %>
+      <%= content_tag :div, '❌', class: 'media-item__button media-item--grid__button media-item--grid__button__hide-from-public glyphicon', data: { hide_from_public_path: hide_from_public_admin_media_item_path(media_item) }, title: 'Hide from public' %>
+    <% end %>
     <%= content_tag :div, '', class: 'media-item__button media-item--grid__button media-item--grid__button__edit glyphicon glyphicon-pencil', data: { path: edit_admin_media_item_path(media_item) } %>
     <%# TODO: update delete icon to work in media library grid view? %>
     <%= content_tag :div, '', class: 'media-item__button media-item--grid__button media-item--grid__button__remove glyphicon glyphicon-remove' %>

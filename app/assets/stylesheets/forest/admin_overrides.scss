@@ -1,1 +1,7 @@
 // Admin overrides
+
+.media-item--grid__button__hide-from-public {
+  &:before {
+    content: none;
+  }
+}
