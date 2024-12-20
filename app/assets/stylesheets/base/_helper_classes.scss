@@ -37,3 +37,11 @@
 .mb-gutter { margin-bottom: $gutter; }
 
 .muted { opacity: 0.6; }
+
+.no-padding-mobile {
+  @include breakpoint(xs) {
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;;
+  }
+}

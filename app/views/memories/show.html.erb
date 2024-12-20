@@ -12,7 +12,7 @@
     </div>
   </div>
   <%= content_tag :div, class: (full_width? ? '' : 'site-container') do %>
-    <div class="container-fluid">
+    <div class="container-fluid no-padding-mobile">
       <div class="row">
         <% @media_items.each_with_index do |media_item, index| %>
           <%= content_tag :div, class: "col-12 #{'portrait-image-col' if media_item.portrait?}" do %>
