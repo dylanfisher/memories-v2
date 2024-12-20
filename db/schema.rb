@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_19_060613) do
+ActiveRecord::Schema.define(version: 2024_12_20_013110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2024_12_19_060613) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "public", default: false, null: false
+    t.string "public_title"
     t.index ["blockable_metadata"], name: "index_memories_on_blockable_metadata", using: :gin
     t.index ["public"], name: "index_memories_on_public"
     t.index ["slug"], name: "index_memories_on_slug", unique: true

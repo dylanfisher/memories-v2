@@ -10,6 +10,7 @@
             <div class="row small-gutters">
               <div class="col-md-6">
                 <%= f.input :title %>
+                <%= f.input :public_title %>
                 <%= render 'admin/form_inputs/slug', f: f %>
                 <%= f.input :description, markdown: true %>
                 <%= f.button :submit, class: 'btn-success d-md-none' %>

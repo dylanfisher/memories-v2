@@ -25,6 +25,7 @@ class MemoriesController < ForestController
       @media_items = @memory.media_items
     else
       @media_items = @memory.media_items.where(hide_from_public: false)
+      @page_title = @memory.public_title.presence || @memory.title
     end
   end
 
