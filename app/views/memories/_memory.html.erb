@@ -7,7 +7,13 @@
 <% end %>
 <%= content_tag :div, class: 'memory-index__memory not-initialized col-12', data: { image_urls: media_items.to_a.collect { |m| m.attachment_url(:small) } } do %>
   <% if media_items.present? %>
-    <%= link_to '', memory_path(memory.to_friendly_param), class: 'memory-index__preview-area row small-gutters mb-2 blank-link' %>
+    <%= link_to memory_path(memory.to_friendly_param), class: 'memory-index__preview-area row small-gutters mb-2 blank-link' do %>
+      <% 6.times do |index| %>
+        <div class="col-4 col-md-2 <%= 'mt-2 mt-md-0' if index >= 3 %>">
+          <div class="landscape-image placeholder-image"></div>
+        </div>
+      <% end %>
+    <% end %>
   <% end %>
   <%= link_to md(title_to_use), memory_path(memory.to_friendly_param), class: 'blank-link-hover' %>
   <%= content_tag :div, memory.date.strftime('%B %d, %Y'), class: 'memory-index__date small-text muted' %>
