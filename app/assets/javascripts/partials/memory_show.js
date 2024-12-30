@@ -28,4 +28,8 @@ App.pageLoad.push(function() {
       window.scrollTo(0, $activeItem.offset().top);
     }
   });
+
+  if ( App.$html.hasClass('controller--memories action--show') ) {
+    lazySizesConfig.expFactor = 10;
+  }
 });

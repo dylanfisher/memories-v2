@@ -3,6 +3,7 @@ class MediaItem < Forest::ApplicationRecord
 
   scope :by_title, -> { order(title: :asc, id: :asc) }
   scope :hide_from_public, -> { where(hide_from_public: true) }
+  scope :visible_to_public, -> { where(hide_from_public: false) }
   scope :range, -> (range) {
     range_match = range.to_s.match(/(\d+)-(\d+)/)
     from = range_match[1].to_i

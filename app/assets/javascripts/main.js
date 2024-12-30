@@ -30,6 +30,7 @@ $(function() {
   App.windowWidth  = $(window).width();
   App.windowHeight = $(window).height();
 
+  App.$html = $('html');
   App.$body = $('body');
 
   App.runFunctions(App.pageLoad);
