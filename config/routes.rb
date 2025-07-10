@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'memories#index'
 
   resources :memories, only: [:index, :show]
+  resources :shared_links, only: [:show], path: 'shared', controller: 'memories', defaults: { shared: true }
 
   get 'screensaver', to: 'screensaver#index'
   get 'full-mode', to: 'options#full'

@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Connect to server via dokku
 
-Things you may want to cover:
+`ssh dokku@photos.dylanfisher.com`
 
-* Ruby version
+Database export
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`ssh dokku@photos.dylanfisher.com dokku postgres:export memories_database | gzip -1 > latest.dump.gz`

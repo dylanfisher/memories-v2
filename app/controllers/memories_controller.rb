@@ -19,7 +19,11 @@ class MemoriesController < ForestController
   end
 
   def show
-    authorize @memory
+    if params[:shared] && params[:id] == @memory.shared_link
+      skip_authorization
+    else
+      authorize @memory
+    end
 
     if current_user.try(:admin?)
       @media_items = @memory.media_items
@@ -32,6 +36,10 @@ class MemoriesController < ForestController
   private
 
     def set_memory
-      @memory = Memory.find_by!(slug: params[:id])
+      if params[:shared] == true
+        @memory = Memory.find_by!(shared_link: params[:id])
+      else
+        @memory = Memory.find_by!(slug: params[:id])
+      end
     end
 end

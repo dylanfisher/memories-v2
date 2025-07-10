@@ -19,6 +19,16 @@
                 <%= render 'admin/form_inputs/status', f: f, record: @memory %>
                 <%= f.input :date, as: :datepicker %>
                 <%= f.input :public, label: 'Visible to public' %>
+                <%= f.input :shared_link, label: 'Publicly accessible share link', input_html: { id: 'shared_link_input' } %>
+                <% if f.object.shared_link.present? %>
+                  <% shared_link = shared_link_url(f.object.shared_link) %>
+                  <div class="mt-n2 mb-2">
+                    <%= link_to shared_link, shared_link %>
+                  </div>
+                <% end %>
+                <button type="button" class="btn btn-outline-secondary mb-3" id="generate_shared_link">
+                  Generate Shared Link
+                </button>
                 <%= f.input :media_item_range, hint: 'Specify a range, such as 123-145 or comma-separated IDs to include.' %>
                 <%= f.input :media_item_skip_range, hint: 'Specify a range or comma-separated IDs to skip.' %>
                 <%= link_to 'View media items for this range', admin_media_items_path(range: f.object.media_item_range) if f.object.media_item_range.present? %>

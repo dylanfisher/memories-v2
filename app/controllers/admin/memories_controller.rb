@@ -45,7 +45,7 @@ class Admin::MemoriesController < Admin::ForestController
 
   def memory_params
     # Add blockable params to the permitted attributes if this record is blockable `**BlockSlot.blockable_params`
-    params.require(:memory).permit(:slug, :status, :title, :date, :description, :media_item_range, :media_item_skip_range, :public, :public_title)
+    params.require(:memory).permit(:slug, :status, :title, :date, :description, :media_item_range, :media_item_skip_range, :public, :public_title, :shared_link)
   end
 
   def set_memory
