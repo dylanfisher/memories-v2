@@ -7,3 +7,7 @@ Connect to server via dokku
 Database export
 
 `ssh dokku@photos.dylanfisher.com dokku postgres:export memories_database | gzip -1 > latest.dump.gz`
+
+Deploy to dokku
+
+`git push dokku main`

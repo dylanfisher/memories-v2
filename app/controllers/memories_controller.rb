@@ -19,7 +19,7 @@ class MemoriesController < ForestController
   end
 
   def show
-    if params[:shared] && params[:id] == @memory.shared_link
+    if params[:shared] == true && params[:id] == @memory.shared_link
       skip_authorization
     else
       authorize @memory
