@@ -10,8 +10,8 @@ Database export
 - extract the dump before restoring it below
 - `bin/rails db:drop DISABLE_DATABASE_ENVIRONMENT_CHECK=1`
 - `bin/rails db:create`
-- `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d memories_v2_development latest.dump.gz`
-- `rm latest.dump.gz`
+- `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d memories_v2_development latest.dump`
+- `rm latest.dump`
 
 Deploy to dokku
 
