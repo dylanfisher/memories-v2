@@ -2,6 +2,8 @@ class ScreensaverController < ForestController
   layout 'screensaver'
 
   def index
+    skip_authorization
+
     memories = Memory.public_only
 
     pattern = /^\d{4}-\d{2}-\d{2}$/

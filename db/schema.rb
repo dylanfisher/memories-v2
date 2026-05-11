@@ -10,48 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_07_10_181346) do
-
+ActiveRecord::Schema[8.1].define(version: 2026_05_11_024922) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
-  enable_extension "plpgsql"
 
   create_table "base_blocks", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "block_kinds", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "category"
     t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "category"
+    t.datetime "created_at", precision: nil, null: false
+    t.string "name"
     t.string "record_type"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["category"], name: "index_block_kinds_on_category"
     t.index ["name"], name: "index_block_kinds_on_name", unique: true
     t.index ["record_type"], name: "index_block_kinds_on_record_type"
   end
 
   create_table "block_layouts", force: :cascade do |t|
-    t.string "slug"
-    t.string "display_name"
+    t.datetime "created_at", precision: nil, null: false
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.string "slug"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["slug"], name: "index_block_layouts_on_slug", unique: true
   end
 
   create_table "block_slots", id: :serial, force: :cascade do |t|
-    t.string "block_type"
     t.integer "block_id"
     t.integer "block_kind_id"
-    t.string "block_record_type"
-    t.integer "block_record_id"
-    t.integer "position", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.bigint "block_layout_id"
+    t.integer "block_record_id"
+    t.string "block_record_type"
+    t.string "block_type"
+    t.datetime "created_at", precision: nil, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["block_kind_id"], name: "index_block_slots_on_block_kind_id"
     t.index ["block_layout_id"], name: "index_block_slots_on_block_layout_id"
     t.index ["block_record_type", "block_record_id"], name: "index_block_slots_on_block_record"
@@ -59,43 +58,46 @@ ActiveRecord::Schema.define(version: 2025_07_10_181346) do
   end
 
   create_table "media_items", id: :serial, force: :cascade do |t|
-    t.string "title"
-    t.string "slug"
-    t.text "caption"
     t.string "alternative_text"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "media_item_status", default: 0
+    t.string "attachment_content_type"
     t.jsonb "attachment_data"
+    t.text "caption"
+    t.datetime "created_at", precision: nil, null: false
+    t.text "description"
+    t.boolean "hide_from_public", default: false, null: false
+    t.integer "media_item_status", default: 0
     t.float "point_of_interest_x", default: 50.0
     t.float "point_of_interest_y", default: 50.0
-    t.string "attachment_content_type"
+    t.bigint "poster_image_id"
     t.boolean "retain_source", default: false, null: false
-    t.boolean "hide_from_public", default: false, null: false
+    t.string "slug"
+    t.string "title"
+    t.datetime "updated_at", precision: nil, null: false
+    t.jsonb "video_data"
     t.index "((attachment_data -> 'derivatives'::text))", name: "index_media_items_on_attachment_data_derivatives", using: :gin
     t.index ["attachment_content_type"], name: "index_media_items_on_attachment_content_type"
     t.index ["attachment_data"], name: "index_media_items_on_attachment_data", using: :gin
     t.index ["created_at"], name: "index_media_items_on_created_at"
     t.index ["hide_from_public"], name: "index_media_items_on_hide_from_public"
     t.index ["media_item_status"], name: "index_media_items_on_media_item_status"
+    t.index ["poster_image_id"], name: "index_media_items_on_poster_image_id"
     t.index ["slug"], name: "index_media_items_on_slug", unique: true
   end
 
   create_table "memories", force: :cascade do |t|
-    t.string "title"
+    t.jsonb "blockable_metadata", default: {}
+    t.datetime "created_at", null: false
     t.date "date"
     t.text "description"
     t.string "media_item_range"
     t.string "media_item_skip_range"
-    t.string "slug"
-    t.integer "status", default: 1, null: false
-    t.jsonb "blockable_metadata", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.boolean "public", default: false, null: false
     t.string "public_title"
     t.string "shared_link"
+    t.string "slug"
+    t.integer "status", default: 1, null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
     t.index ["blockable_metadata"], name: "index_memories_on_blockable_metadata", using: :gin
     t.index ["public"], name: "index_memories_on_public"
     t.index ["slug"], name: "index_memories_on_slug", unique: true
@@ -103,28 +105,28 @@ ActiveRecord::Schema.define(version: 2025_07_10_181346) do
   end
 
   create_table "menus", id: :serial, force: :cascade do |t|
-    t.string "title"
+    t.datetime "created_at", precision: nil, null: false
     t.string "slug"
     t.text "structure"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "title"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["slug"], name: "index_menus_on_slug", unique: true
   end
 
   create_table "pages", id: :serial, force: :cascade do |t|
-    t.string "title"
-    t.string "slug"
-    t.text "path"
-    t.integer "status", default: 1, null: false
-    t.datetime "scheduled_date"
+    t.jsonb "blockable_metadata", default: {}
+    t.datetime "created_at", precision: nil, null: false
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "featured_image_id"
     t.integer "parent_page_id"
+    t.text "path"
     t.string "redirect"
-    t.jsonb "blockable_metadata", default: {}
+    t.datetime "scheduled_date", precision: nil
     t.string "seo_title"
+    t.string "slug"
+    t.integer "status", default: 1, null: false
+    t.string "title"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["blockable_metadata"], name: "index_pages_on_blockable_metadata", using: :gin
     t.index ["featured_image_id"], name: "index_pages_on_featured_image_id"
     t.index ["parent_page_id"], name: "index_pages_on_parent_page_id"
@@ -134,13 +136,13 @@ ActiveRecord::Schema.define(version: 2025_07_10_181346) do
   end
 
   create_table "redirects", force: :cascade do |t|
-    t.string "name"
+    t.datetime "created_at", null: false
     t.string "from_path"
-    t.string "to_path"
+    t.string "name"
     t.string "redirect_type"
     t.integer "status", default: 1, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.string "to_path"
+    t.datetime "updated_at", null: false
     t.index ["from_path"], name: "index_redirects_on_from_path"
     t.index ["status", "from_path"], name: "index_redirects_on_status_and_from_path"
     t.index ["status"], name: "index_redirects_on_status"
@@ -148,22 +150,24 @@ ActiveRecord::Schema.define(version: 2025_07_10_181346) do
   end
 
   create_table "settings", id: :serial, force: :cascade do |t|
-    t.string "title"
-    t.string "slug"
-    t.text "value"
+    t.datetime "created_at", precision: nil, null: false
     t.text "description"
-    t.string "value_type", default: "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "locale"
+    t.integer "setting_status", default: 0
+    t.string "slug"
+    t.string "title"
+    t.datetime "updated_at", precision: nil, null: false
+    t.text "value"
+    t.string "value_type", default: "text"
     t.index ["locale", "slug"], name: "index_settings_on_locale_and_slug", unique: true
     t.index ["locale"], name: "index_settings_on_locale"
+    t.index ["setting_status"], name: "index_settings_on_setting_status"
   end
 
   create_table "user_groups", id: :serial, force: :cascade do |t|
+    t.datetime "created_at", precision: nil, null: false
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_user_groups_on_name", unique: true
   end
 
@@ -175,27 +179,29 @@ ActiveRecord::Schema.define(version: 2025_07_10_181346) do
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
     t.string "first_name"
     t.string "last_name"
-    t.string "slug"
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "last_sign_in_ip"
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "reset_password_sent_at", precision: nil
+    t.string "reset_password_token"
     t.text "settings", default: "{}", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "sign_in_count", default: 0, null: false
+    t.string "slug"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_name"], name: "index_users_on_last_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   add_foreign_key "block_slots", "block_kinds"
   add_foreign_key "block_slots", "block_layouts"
+  add_foreign_key "media_items", "media_items", column: "poster_image_id"
 end

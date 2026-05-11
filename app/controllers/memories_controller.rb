@@ -6,6 +6,8 @@ class MemoriesController < ForestController
   before_action :set_memory, only: [:show]
 
   def index
+    skip_authorization
+
     @page_title = 'Home'
 
     if current_user && current_user.admin?

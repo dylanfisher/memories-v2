@@ -51,7 +51,7 @@ module MemoriesV2
       end
     end
 
-    config.active_job.queue_adapter = :sucker_punch
+    # config.active_job.queue_adapter = :sucker_punch
 
     config.middleware.insert_after ActionDispatch::Static, Rack::Deflater
 
