@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   # Public
   root to: 'memories#index'
 
+  get 'up', to: 'health#show'
+
   resources :memories, only: [:index, :show]
   resources :shared_links, only: [:show], path: 'shared', controller: 'memories', defaults: { shared: true }
 
