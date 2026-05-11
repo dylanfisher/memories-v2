@@ -1,15 +1,18 @@
 class MemoriesController < ForestController
   include Pagy::Backend
 
+  MEMORIES_PER_PAGE = 50
+
   before_action :set_memory, only: [:show]
 
   def index
     @page_title = 'Home'
+    @memories_cache_key = Digest::MD5.hexdigest(params.to_unsafe_h.except('controller', 'action').to_query)
 
     if current_user && current_user.admin?
-      @pagy, @memories = pagy apply_scopes(Memory.published.by_date), items: 1000
+      @pagy, @memories = pagy apply_scopes(Memory.published.by_date), items: MEMORIES_PER_PAGE
     else
-      @pagy, @memories = pagy apply_scopes(Memory.published.public_only.by_date), items: 1000
+      @pagy, @memories = pagy apply_scopes(Memory.published.public_only.by_date), items: MEMORIES_PER_PAGE
     end
 
     respond_to do |format|
