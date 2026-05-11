@@ -7,7 +7,6 @@ class MemoriesController < ForestController
 
   def index
     @page_title = 'Home'
-    @memories_cache_key = Digest::MD5.hexdigest(params.to_unsafe_h.except('controller', 'action').to_query)
 
     if current_user && current_user.admin?
       @pagy, @memories = pagy apply_scopes(Memory.published.by_date), items: MEMORIES_PER_PAGE

@@ -110,6 +110,7 @@ var loadNextMemoryPage = function() {
     url: nextMemoryPageUrl(nextPage),
     type: 'GET',
     dataType: 'script',
+    cache: true,
     success: function() {
       initMemories();
       loading = false;
