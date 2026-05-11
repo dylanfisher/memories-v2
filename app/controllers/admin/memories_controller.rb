@@ -3,6 +3,7 @@ class Admin::MemoriesController < Admin::ForestController
 
   def index
     @pagy, @memories = pagy apply_scopes(Memory).by_id
+    authorize @memories, :admin_index?
   end
 
   def new
