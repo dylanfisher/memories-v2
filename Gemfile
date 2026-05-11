@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.3.6'
+ruby '4.0.3'
 
 gem 'forest', '~> 2.0', git: 'https://github.com/dylanfisher/forest.git', branch: '2-0-stable'
 
@@ -18,7 +18,9 @@ gem 'sucker_punch', '~> 2.0'
 gem 'exifr'
 
 gem 'bigdecimal'
+gem 'benchmark'
 gem 'mutex_m'
+gem 'tsort'
 gem 'csv'
 
 group :development do
