@@ -2,6 +2,18 @@ require 'exifr/jpeg'
 
 FileUploader.class_eval do
   # https://shrinerb.com/docs/plugins/add_metadata
+  forest_store_upload_options = opts.dig(:upload_options, :store)
+
+  plugin :upload_options, store: -> (file, options) do
+    upload_options =
+      if forest_store_upload_options.respond_to?(:call)
+        forest_store_upload_options.call(file, options)
+      else
+        forest_store_upload_options || {}
+      end
+
+    upload_options.merge(acl: 'public-read')
+  end
 
   add_metadata do |io, derivative: nil, **|
     begin

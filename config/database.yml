@@ -81,6 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: memories_v2_production
-  username: memories_v2
-  password: <%= ENV['MEMORIES_V2_DATABASE_PASSWORD'] %>
+  url: <%= ENV["DATABASE_URL"] %>

@@ -19,8 +19,8 @@
                 <%= f.input :hide_from_public %>
                 <%= f.input :title, placeholder: 'The title will be generated automatically from the file name if left blank.', hint: 'The title is used to identify the image on the backend. It is not usually visible to the user, and typically you do not need to edit this field.' %>
                 <%= render 'admin/form_inputs/slug', f: f %>
-                <%= localized_inputs f, :alternative_text, hint: 'The alt attribute provides alternative information for an image if a user for some reason cannot view it (because of slow connection, an error in the src attribute, or if the user uses a screen reader).' %>
-                <%= localized_inputs f, :caption, markdown: true %>
+                <%= localized_input f, :alternative_text, hint: 'The alt attribute provides alternative information for an image if a user for some reason cannot view it (because of slow connection, an error in the src attribute, or if the user uses a screen reader).' %>
+                <%= localized_input f, :caption, markdown: true %>
                 <%= f.button :submit, class: 'btn-success' %>
               </div>
               <div class="col-md-6 file-upload-wrapper">

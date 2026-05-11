@@ -14,7 +14,7 @@ gem 'autoprefixer-rails', '~> 10.0'
 gem 'dalli'
 gem 'rack-cors', require: 'rack/cors'
 gem 'sprockets', '~> 3.7.2'
-gem 'sucker_punch'
+gem 'solid_queue'
 gem 'exifr'
 
 gem 'bigdecimal'
