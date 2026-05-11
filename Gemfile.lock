@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/dylanfisher/forest.git
-  revision: 8f1c25d0abf50113274b230985927763e65c58d1
+  revision: 9b2264b3d8aa013a2ed317d28a5601262d8e1f12
   branch: master
   specs:
-    forest (3.54.1)
+    forest (3.55.0)
       aws-sdk-lambda
       aws-sdk-mediaconvert
       aws-sdk-s3
