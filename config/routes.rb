@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   get 'screensaver', to: 'screensaver#index'
   get 'full-mode', to: 'options#full'
 
+  # API
+  namespace :api do
+    resources :memories, only: [] do
+      get 'urls', to: 'memories#full_resolution_image_urls'
+    end
+  end
+
   # Admin
   namespace :admin do
     resources :locations
