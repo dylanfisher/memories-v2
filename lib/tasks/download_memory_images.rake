@@ -91,18 +91,22 @@ def select_endpoint_base
 end
 
 def normalize_endpoint_base(value)
-  case value.to_s.strip.downcase
+  endpoint = value.to_s.strip
+
+  case endpoint.downcase
   when 'local'
     ENV['LOCAL_ENDPOINT'].presence || 'http://localhost:3000'
   when 'production', 'prod', 'remote'
     'https://photos.dylanfisher.com'
   else
-    value.to_s.strip.sub(%r{/*\z}, '')
+    endpoint = 'https://photos.dylanfisher.com' if endpoint.blank?
+    endpoint = "https://#{endpoint}" unless endpoint.match?(%r{\Ahttps?://}i)
+    endpoint.sub(%r{/*\z}, '')
   end
 end
 
 def fetch_memory_urls(memory_id, endpoint_base, orientation)
-  uri = URI.join("#{endpoint_base}/", "api/memories/#{memory_id}/urls")
+  uri = URI.parse("#{endpoint_base}/api/memories/#{memory_id}/urls")
   query = {}
   query[:orientation] = orientation if orientation.present?
   uri.query = URI.encode_www_form(query) if query.present?
@@ -111,7 +115,7 @@ def fetch_memory_urls(memory_id, endpoint_base, orientation)
 end
 
 def fetch_recent_memories(endpoint_base, limit)
-  uri = URI.join("#{endpoint_base}/", 'api/memories/recent')
+  uri = URI.parse("#{endpoint_base}/api/memories/recent")
   uri.query = URI.encode_www_form(limit: limit)
 
   JSON.parse(URI.open(uri.to_s, read_timeout: 120, open_timeout: 120).read)

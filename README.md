@@ -1,10 +1,10 @@
 # README
 
-Connect to server via dokku
+## Connect to server via dokku
 
 `ssh dokku@photos.dylanfisher.com`
 
-Database export
+## Database export
 
 - `ssh dokku@photos.dylanfisher.com postgres:export memories_database | gzip -1 > latest.dump.gz`
 - extract the dump before restoring it below
@@ -13,6 +13,14 @@ Database export
 - `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d memories_v2_development latest.dump`
 - `rm latest.dump`
 
-Deploy to dokku
+## Deploy to dokku
 
 `git push dokku main`
+
+## Tails logs on dokku
+
+`ssh -t dokku@photos.dylanfisher.com logs memories -t`
+
+## Download image task
+
+`bin/rails memories:download_images`
