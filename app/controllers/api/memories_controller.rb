@@ -73,9 +73,12 @@ module Api
 
     def image_filename(media_item)
       filename = media_item.attachment_file_name.presence || File.basename(URI.parse(media_item.attachment_url).path)
-      "#{media_item.id}-#{filename}"
+      extension = File.extname(filename)
+      basename = File.basename(filename, extension)
+
+      "#{basename}-#{media_item.id}#{extension}"
     rescue URI::InvalidURIError
-      "#{media_item.id}-image"
+      "image-#{media_item.id}"
     end
 
     def include_for_orientation?(media_item, orientation_filter)
