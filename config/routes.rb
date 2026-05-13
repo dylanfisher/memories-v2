@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # API
   namespace :api do
     resources :memories, only: [] do
+      get 'recent', to: 'memories#recent', on: :collection
       get 'urls', to: 'memories#full_resolution_image_urls'
     end
   end

@@ -6,6 +6,17 @@ module Api
       'landscape' => :landscape?
     }.freeze
 
+    def recent
+      skip_authorization
+
+      limit = params[:limit].presence.to_i
+      limit = 25 if limit <= 0
+
+      memories = Memory.published.public_only.by_date.limit(limit)
+
+      render json: memories.map { |memory| serialize_recent_memory(memory) }
+    end
+
     def full_resolution_image_urls
       skip_authorization
 
@@ -22,6 +33,15 @@ module Api
     end
 
     private
+
+    def serialize_recent_memory(memory)
+      {
+        id: memory.id,
+        slug: memory.slug,
+        title: memory.public_title.presence || memory.title,
+        date: memory.date
+      }
+    end
 
     def serialize_memory(memory, orientation_filter)
       {

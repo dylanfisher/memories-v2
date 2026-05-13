@@ -14,7 +14,7 @@ namespace :memories do
     thread_count = 8 if thread_count <= 0
     endpoint_base = select_endpoint_base
 
-    memories = Memory.published.public_only.by_date.limit(limit).to_a
+    memories = fetch_recent_memories(endpoint_base, limit)
 
     if memories.blank?
       puts 'No published public memories found.'
@@ -25,9 +25,9 @@ namespace :memories do
     memories.each_with_index do |memory, index|
       puts format('%<index>2d. [%<id>d] %<date>s  %<title>s',
                   index: index + 1,
-                  id: memory.id,
-                  date: memory.date,
-                  title: memory.public_title.presence || memory.title)
+                  id: memory_id(memory),
+                  date: memory_date(memory),
+                  title: memory_title(memory))
     end
 
     print "\nChoose memories to download (for example: 1,3,5-7 or all): "
@@ -58,25 +58,25 @@ namespace :memories do
                          .keys
 
     selected_memories.each do |memory|
-      api_memory = fetch_memory_urls(memory.id, endpoint_base, orientation)
+      api_memory = fetch_memory_urls(memory_id(memory), endpoint_base, orientation)
       images = Array(api_memory['image_urls']).uniq
 
       folder_name = folder_title(memory)
-      folder_name = "#{folder_name}-#{memory.id}" if duplicate_titles.include?(folder_name)
+      folder_name = "#{folder_name}-#{memory_id(memory)}" if duplicate_titles.include?(folder_name)
       memory_destination = File.join(destination_root, folder_name)
       FileUtils.mkdir_p(memory_destination)
 
       manifest_path = File.join(memory_destination, '.downloaded_media_items.json')
       manifest = read_manifest(manifest_path)
 
-      puts "\n#{memory.public_title.presence || memory.title} (#{images.length} images)"
+      puts "\n#{memory_title(memory)} (#{images.length} images)"
       download_image_urls(images, memory_destination, manifest, thread_count)
 
       write_manifest(manifest_path, manifest)
     rescue OpenURI::HTTPError => e
-      puts "\n#{memory.public_title.presence || memory.title}: failed to fetch URLs from #{endpoint_base} (#{e.message})"
+      puts "\n#{memory_title(memory)}: failed to fetch URLs from #{endpoint_base} (#{e.message})"
     rescue JSON::ParserError => e
-      puts "\n#{memory.public_title.presence || memory.title}: endpoint returned invalid JSON (#{e.message})"
+      puts "\n#{memory_title(memory)}: endpoint returned invalid JSON (#{e.message})"
     end
   end
 end
@@ -110,6 +110,19 @@ def fetch_memory_urls(memory_id, endpoint_base, orientation)
   JSON.parse(URI.open(uri.to_s, read_timeout: 120, open_timeout: 120).read)
 end
 
+def fetch_recent_memories(endpoint_base, limit)
+  uri = URI.join("#{endpoint_base}/", 'api/memories/recent')
+  uri.query = URI.encode_www_form(limit: limit)
+
+  JSON.parse(URI.open(uri.to_s, read_timeout: 120, open_timeout: 120).read)
+rescue OpenURI::HTTPError => e
+  puts "Failed to fetch recent memories from #{endpoint_base} (#{e.message})"
+  []
+rescue JSON::ParserError => e
+  puts "Recent memories endpoint returned invalid JSON (#{e.message})"
+  []
+end
+
 def select_memories(memories, input)
   input = input.to_s.strip.downcase
   return memories if input == 'all'
@@ -137,8 +150,19 @@ def normalize_orientation(input)
 end
 
 def folder_title(memory)
-  title = memory.public_title.presence || memory.title
-  safe_filename(title)
+  safe_filename(memory_title(memory))
+end
+
+def memory_id(memory)
+  memory['id'] || memory[:id]
+end
+
+def memory_date(memory)
+  memory['date'] || memory[:date]
+end
+
+def memory_title(memory)
+  memory['title'] || memory[:title]
 end
 
 def safe_filename(value)
