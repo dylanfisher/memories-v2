@@ -44,22 +44,38 @@ module Api
     end
 
     def serialize_memory(memory, orientation_filter)
+      images = images_for(memory, orientation_filter)
+
       {
         id: memory.id,
         slug: memory.slug,
         title: memory.public_title.presence || memory.title,
         date: memory.date,
-        image_urls: image_urls_for(memory, orientation_filter)
+        images: images.map { |media_item| serialize_image(media_item) },
+        image_urls: images.map(&:attachment_url).compact
       }
     end
 
-    def image_urls_for(memory, orientation_filter)
+    def images_for(memory, orientation_filter)
       memory.media_items
             .visible_to_public
             .select(&:image?)
             .select { |media_item| include_for_orientation?(media_item, orientation_filter) }
-            .map(&:attachment_url)
-            .compact
+    end
+
+    def serialize_image(media_item)
+      {
+        id: media_item.id,
+        url: media_item.attachment_url,
+        filename: image_filename(media_item)
+      }
+    end
+
+    def image_filename(media_item)
+      filename = media_item.attachment_file_name.presence || File.basename(URI.parse(media_item.attachment_url).path)
+      "#{media_item.id}-#{filename}"
+    rescue URI::InvalidURIError
+      "#{media_item.id}-image"
     end
 
     def include_for_orientation?(media_item, orientation_filter)

@@ -38,11 +38,11 @@ namespace :memories do
       next
     end
 
-    print 'Orientation filter (all, portrait, landscape): '
+    print 'Orientation filter (all, portrait, landscape) [landscape]: '
     orientation = normalize_orientation(STDIN.gets)
 
-    print 'Download location: '
-    destination_root = STDIN.gets.to_s.strip
+    print 'Download location [/Volumes/main-1/photos/public]: '
+    destination_root = STDIN.gets.to_s.strip.presence || '/Volumes/main-1/photos/public'
 
     if destination_root.blank?
       puts 'No download location provided.'
@@ -52,17 +52,11 @@ namespace :memories do
     destination_root = File.expand_path(destination_root)
     FileUtils.mkdir_p(destination_root)
 
-    duplicate_titles = selected_memories
-                         .group_by { |memory| folder_title(memory) }
-                         .select { |_title, grouped_memories| grouped_memories.many? }
-                         .keys
-
     selected_memories.each do |memory|
       api_memory = fetch_memory_urls(memory_id(memory), endpoint_base, orientation)
-      images = Array(api_memory['image_urls']).uniq
+      images = images_from_api_memory(api_memory)
 
-      folder_name = folder_title(memory)
-      folder_name = "#{folder_name}-#{memory_id(memory)}" if duplicate_titles.include?(folder_name)
+      folder_name = "#{folder_title(memory)}-#{memory_id(memory)}"
       memory_destination = File.join(destination_root, folder_name)
       FileUtils.mkdir_p(memory_destination)
 
@@ -79,6 +73,21 @@ namespace :memories do
       puts "\n#{memory_title(memory)}: endpoint returned invalid JSON (#{e.message})"
     end
   end
+end
+
+def images_from_api_memory(api_memory)
+  images = Array(api_memory['images']).filter_map do |image|
+    url = image['url'] || image[:url]
+    next if url.blank?
+
+    {
+      url: url,
+      filename: image['filename'] || image[:filename]
+    }
+  end
+
+  images = Array(api_memory['image_urls']).filter_map { |url| { url: url } } if images.blank?
+  images.uniq { |image| image[:url] }
 end
 
 def select_endpoint_base
@@ -145,7 +154,8 @@ end
 
 def normalize_orientation(input)
   orientation = input.to_s.strip.downcase
-  return nil if orientation.blank? || orientation == 'all'
+  return :landscape if orientation.blank?
+  return nil if orientation == 'all'
   return :portrait if orientation == 'portrait'
   return :landscape if ['landscape', 'horizontal'].include?(orientation)
 
@@ -189,14 +199,14 @@ def write_manifest(path, manifest)
   File.write(path, JSON.pretty_generate(manifest.sort.to_h))
 end
 
-def download_image_urls(image_urls, destination, manifest, thread_count)
+def download_image_urls(images, destination, manifest, thread_count)
   queue = Queue.new
-  image_urls.each_with_index { |image_url, index| queue << { url: image_url, index: index } }
+  images.each_with_index { |image, index| queue << image.merge(index: index) }
 
   manifest_mutex = Mutex.new
   output_mutex = Mutex.new
   paths_in_progress = []
-  worker_count = [thread_count, image_urls.length].min
+  worker_count = [thread_count, images.length].min
 
   output_mutex.synchronize { puts "  downloading with #{worker_count} threads" } if worker_count.positive?
 
@@ -204,7 +214,7 @@ def download_image_urls(image_urls, destination, manifest, thread_count)
     Thread.new do
       loop do
         image = queue.pop(true)
-        download_image_url(image[:url], image[:index], destination, manifest, manifest_mutex, paths_in_progress, output_mutex)
+        download_image_url(image, destination, manifest, manifest_mutex, paths_in_progress, output_mutex)
       rescue ThreadError
         break
       end
@@ -212,7 +222,9 @@ def download_image_urls(image_urls, destination, manifest, thread_count)
   end.each(&:join)
 end
 
-def download_image_url(url, index, destination, manifest, manifest_mutex, paths_in_progress, output_mutex)
+def download_image_url(image, destination, manifest, manifest_mutex, paths_in_progress, output_mutex)
+  url = image[:url]
+  index = image[:index]
   manifest_key = Digest::SHA256.hexdigest(url)
   path = nil
 
@@ -225,7 +237,7 @@ def download_image_url(url, index, destination, manifest, manifest_mutex, paths_
       end
     end
 
-    filename = filename_for(url, index)
+    filename = safe_filename(image[:filename].presence || filename_for(url, index))
     target_path = File.join(destination, filename)
 
     if File.exist?(target_path)
